@@ -3,6 +3,7 @@ from enum import Enum
 class QuantumSafeAlgorithms(Enum):
     BIKEL1 = 'bikel1'
     BIKEL3 = 'bikel3'
+    BIKEL5 = 'bikel5'
     KYBER512 = 'kyber512'
     KYBER768 = 'kyber768'
     KYBER1024 = 'kyber1024'
