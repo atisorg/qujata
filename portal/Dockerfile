@@ -10,7 +10,7 @@ RUN mkdir /usr/share/nginx/html/qujata
 COPY . .
 RUN npm install -g yarn
 RUN yarn install
-RUN yarn add env-cmd
+RUN yarn add env-cmd@10.1.0
 RUN if [ "$BUILD_ENV" = "gh-pages" ]; then \
         yarn build:gh-pages; \
     else \

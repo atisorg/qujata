@@ -41,7 +41,7 @@
     },
     {
      "id":3,
-      "algorithm": "kyber512",
+      "algorithm": "mlkem512",
       "iterations": 1000,
       "message_size": 1024,
       "results": {
@@ -53,7 +53,7 @@
     },
     {
       "id":4,
-      "algorithm": "kyber512",
+      "algorithm": "mlkem512",
       "iterations": 2000,
       "message_size": 1024,
       "results": {
