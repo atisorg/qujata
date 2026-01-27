@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { RenderResult, render, screen } from '@testing-library/react';
 import { Dashboard, DashboardProps } from './Dashboard';
-import { ITestParams } from '../../shared/models/quantum.interface';
+import { ITestParamsTLS } from '../../shared/models/quantum.interface';
 
 // Mock the Charts component
 jest.mock('./components/charts/Charts', () => ({
@@ -10,7 +10,7 @@ jest.mock('./components/charts/Charts', () => ({
 
 describe('Dashboard', () => {
   let props: DashboardProps;
-  let sampleTestParams: ITestParams;
+  let sampleTestParams: ITestParamsTLS;
   beforeAll(() => {
     // Prepare the props for the Dashboard component
     sampleTestParams = {

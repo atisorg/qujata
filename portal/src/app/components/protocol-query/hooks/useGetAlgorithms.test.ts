@@ -1,3 +1,5 @@
+// (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 import { renderHook } from '@testing-library/react';
 import { useFetch } from '../../../shared/hooks/useFetch';
 import { useGetAlgorithms } from './useGetAlgorithms';
@@ -11,8 +13,8 @@ describe('useGetAlgorithms', () => {
   test('Should be in Success mode', () => {
     const mockData = {
       classic: ["prime256v1","secp384r1"],
-      hybrid: ["p256_kyber512","p384_kyber768","x25519_kyber768"],
-      quantumSafe: ["bikel1","bikel3","kyber512","kyber768","kyber1024","frodo640aes","frodo640shake","frodo976aes","frodo976shake","frodo1344aes","frodo1344shake","hqc128","hqc192","hqc256"]
+      hybrid: ["p256_mlkem512","p384_mlkem768","X25519MLKEM768"],
+      quantumSafe: ["bikel1","bikel3","mlkem512","mlkem768","mlkem1024","frodo640aes","frodo640shake","frodo976aes","frodo976shake","frodo1344aes","frodo1344shake"]
     };
 
     (useFetch as jest.Mock).mockReturnValue({

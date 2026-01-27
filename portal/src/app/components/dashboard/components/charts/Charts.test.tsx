@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom';
 import { RenderResult, render } from '@testing-library/react';
-import { ITestParams, ITestResponseData } from '../../../../shared/models/quantum.interface';
+import { ITestParamsTLS, ITestResponseData } from '../../../../shared/models/quantum.interface';
 import { Charts, ChartsProps } from './Charts';
 
 describe('Charts', () => {
   let props: ChartsProps;
   beforeAll(() => {
     // Prepare the props for the Charts component
-    const sampleTestParams: ITestParams = {
+    const sampleTestParams: ITestParamsTLS = {
       experimentName: 'test',
       algorithms: {
         label: 'Sample label',
@@ -21,7 +21,7 @@ describe('Charts', () => {
         label: '1024',
         value: '1024'
       },
-      description: 'test'
+      description: 'test',
     };
 
     const sampleData: Partial<ITestResponseData> = {
