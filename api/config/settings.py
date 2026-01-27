@@ -9,7 +9,7 @@ def load_config(app):
     app.configurations = Configuration({
         'environment': os.environ.get('ENVIRONMENT'),
         'log_level': os.environ.get('LOG_LEVEL', 'INFO'),
-        'allowed_algorithms': os.environ.get('DEFAULT_GROUPS',"kyber512:frodo640aes").split(":"),
+        'allowed_algorithms': os.environ.get('DEFAULT_GROUPS',"mlkem512:frodo640aes").split(":"),
         'curl_url': os.environ.get('CURL_URL'),
         'cadvisor_url': os.environ.get('CADVISOR_URL'),
         'request_timeout': os.environ.get('REQUEST_TIMEOUT', 3600),

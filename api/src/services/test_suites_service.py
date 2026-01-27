@@ -1,3 +1,5 @@
+# (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 from datetime import datetime
 from flask import current_app
 from src.models.env_info import EnvInfo
@@ -18,17 +20,30 @@ def create_test_suite(data):
     if env_info is None:
         raise ApiException('Missing env info in database', 'Analyze test failed to complete', HTTP_STATUS_UNPROCESSABLE_ENTITY)
 
-    test_suite = TestSuite(
-        protocol=current_app.configurations.protocol,
-        name=data["experimentName"],
-        description=data["description"],
-        env_info_id=env_info.id,
-        code_release=current_app.configurations.code_release,
-        created_by="",
-        created_date=datetime.now(),
-        updated_by="",
-        updated_date=datetime.now(),
-    )    
+    if 'experimentName' in data:
+        test_suite = TestSuite(
+            protocol=current_app.configurations.protocol,
+            name=data["experimentName"],
+            description=data["description"],
+            env_info_id=env_info.id,
+            code_release=current_app.configurations.code_release,
+            created_by="",
+            created_date=datetime.now(),
+            updated_by="",
+            updated_date=datetime.now(),
+        )
+    if 'experimentNameIperf' in data:
+        test_suite = TestSuite(
+            protocol=current_app.configurations.protocol,
+            name=data["experimentNameIperf"],
+            description=data["descriptionIperf"],
+            env_info_id=env_info.id,
+            code_release=current_app.configurations.code_release,
+            created_by="",
+            created_date=datetime.now(),
+            updated_by="",
+            updated_date=datetime.now(),
+        )
     current_app.database_manager.create(test_suite)
     return test_suite
 
@@ -42,7 +57,7 @@ def create_test_run(start_time, end_time, algorithm, iterations, message_size, t
         status_message=status_message,
         message_size=message_size,
         test_suite_id=test_suite_id
-    )    
+    )
     current_app.database_manager.create(test_run)
     if status == Status.SUCCESS:
         metrics_service.create(test_run, client_metrics, server_metrics, requests_size, start_time, end_time)

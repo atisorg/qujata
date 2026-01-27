@@ -31,7 +31,7 @@ curl --location 'http://localhost:3020/qujata-api/analyze' \
 --data '{
     "experimentName": "name",
     "description" : "test description",
-    "algorithms": ["kyber512"],
+    "algorithms": ["mlkem512"],
     "iterationsCount": [5],
     "messageSizes": [10]
 }'

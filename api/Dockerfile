@@ -6,7 +6,7 @@ COPY src src
 COPY config config
 COPY main.py main.py
 COPY requirements.txt .
-COPY .env .
+#COPY .env .
 
 RUN pip3 install -r requirements.txt
 
