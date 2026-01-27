@@ -1,3 +1,5 @@
+// (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 import '@testing-library/jest-dom';
 import { RenderResult, render, screen } from '@testing-library/react';
 import { Dashboard, DashboardProps } from './Dashboard';
