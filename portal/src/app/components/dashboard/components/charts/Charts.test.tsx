@@ -1,3 +1,5 @@
+// (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 import '@testing-library/jest-dom';
 import { RenderResult, render } from '@testing-library/react';
 import { ITestParamsTLS, ITestResponseData } from '../../../../shared/models/quantum.interface';
