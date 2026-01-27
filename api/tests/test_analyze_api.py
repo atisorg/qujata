@@ -1,3 +1,5 @@
+# (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 import unittest
 from datetime import datetime, timedelta
 import json
