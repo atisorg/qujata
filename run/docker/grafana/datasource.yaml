@@ -1,3 +1,5 @@
+# Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 apiVersion: 1
 
 datasources:
@@ -6,3 +8,9 @@ datasources:
     url: 'http://prometheus:9090'
     uid: 'PB08949F94AB73929'
     # isDefault: true
+  - name: 'Infinity'
+    type: 'yesoreyeram-infinity-datasource'
+    access: proxy
+    isDefault: false
+    editable: true
+
