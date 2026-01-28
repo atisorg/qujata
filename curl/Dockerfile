@@ -1,3 +1,5 @@
+# (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 # Choose a Node.js base image
 ARG NODE_VERSION=18.17.1
 
@@ -21,7 +23,7 @@ RUN npm run build
 # Choose the openquantumsafe/curl image for additional functionality
 FROM openquantumsafe/curl:latest
 
-# change to roo user
+# Change to root user
 USER root
 
 # Install the required dependencies for Node.js
@@ -38,11 +40,21 @@ COPY --from=node /user/src/app/dist /user/src/app/dist
 COPY --from=node /user/src/app/scripts /user/src/app/scripts
 COPY --from=node /user/src/app/node_modules /user/src/app/node_modules
 
+#####
+USER root
+RUN chmod +x /user/src/app/scripts/run-curl-loop.sh
+
 # Set working directory
 WORKDIR /user/src/app
 
 # Set the entrypoint for the application
 CMD ["node", "dist/main.js"]
+
+# Make ip route changes to stablish IPsec tunnel
+COPY script.sh /user/src/app
+RUN chmod +x /user/src/app/script.sh
+
+ENTRYPOINT ["/user/src/app/script.sh"]
 
 # Expose the application's port
 EXPOSE 3010

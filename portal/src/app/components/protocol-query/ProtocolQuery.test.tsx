@@ -1,3 +1,5 @@
+// (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 import '@testing-library/jest-dom';
 import { RenderResult, fireEvent, render, screen } from '@testing-library/react';
 import { ProtocolQuery, ProtocolQueryProps } from './ProtocolQuery';
@@ -8,7 +10,8 @@ describe('ProtocolQuery', () => {
   beforeAll(() => {
     props = {
       isFetching: false,
-      onRunClick: jest.fn(),
+      onRunClickTLS: jest.fn(),
+      onRunClickIpsec: jest.fn(),
       setDuplicateData: jest.fn()
     };
   });
@@ -28,11 +31,18 @@ describe('ProtocolQuery', () => {
     expect(spinner).toBeInTheDocument();
   });
 
-  test('should call onRunClick when form is submitted', () => {
+  test('should call onRunClickTLS when form is submitted', () => {
     render(<ProtocolQuery {...props} />);
     const form = screen.getByTestId('protocol-query-form');
     fireEvent.submit(form);
-    expect(props.onRunClick).toHaveBeenCalled();
+    expect(props.onRunClickTLS).toHaveBeenCalled();
+  });
+
+  test('should call onRunClickIpsec when form is submitted', () => {
+    render(<ProtocolQuery {...props} />);
+    const form = screen.getByTestId('protocol-query-form');
+    fireEvent.submit(form);
+    expect(props.onRunClickIpsec).toHaveBeenCalled();
   });
 
   test('should check all values were rendered', () => {
@@ -45,14 +55,25 @@ describe('ProtocolQuery', () => {
     expect(getByText(PROTOCOL_QUERY_EN.ACTION_BUTTONS.RUN)).toBeTruthy();
   });
 
-  test('should handle form submission', async () => {
+  test('should handle TLS form submission', async () => {
     render(<ProtocolQuery {...props} />);
 
     // Find the form and submit it
     const form = screen.getByTestId('protocol-query-form');
     fireEvent.submit(form);
 
-    // Assert that the onRunClick function has been called
-    expect(props.onRunClick).toHaveBeenCalled();
+    // Assert that the onRunClickTLS function has been called
+    expect(props.onRunClickTLS).toHaveBeenCalled();
+  });
+
+  test('should handle Ipsec form submission', async () => {
+    render(<ProtocolQuery {...props} />);
+
+    // Find the form and submit it
+    const form = screen.getByTestId('protocol-query-form');
+    fireEvent.submit(form);
+
+    // Assert that the onRunClickIpsec function has been called
+    expect(props.onRunClickIpsec).toHaveBeenCalled();
   });
 });

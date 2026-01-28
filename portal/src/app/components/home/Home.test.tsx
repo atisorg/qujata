@@ -1,3 +1,5 @@
+// (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Home } from './Home';
 import { SubHeader, SubHeaderProps } from '../sub-header';
@@ -45,12 +47,12 @@ describe('Home', () => {
     test('should click on run button', async () => {
       (ProtocolQuery as jest.Mock).mockImplementation((props: ProtocolQueryProps) => {
         function onClick() {
-          props.onRunClick({ 
+          props.onRunClickTLS({ 
             experimentName: 'test',
             algorithms: { label: 'regular', value: 'regular' },
             iterationsCount: { label: 'regular', value: 'regular' },
             messageSizes: [{ label: '1024', value: '1024' }],
-            description: 'test'
+            description: 'test',
           });
         }
         return <div onClick={onClick} data-testid='submit-id'>SubHeader</div>;

@@ -1,10 +1,14 @@
+// (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 import { IExperimentData } from "../../../Experiment";
 
 export const MOCK_DATA_FOR_CHARTS: IExperimentData = {
   data: {
     id: 1,
     name: "TestRun1",
+    nameIperf: "TestRun1",
     description: "TestRun1",
+    descriptionIperf: "TestRun1",
     start_time: 1705240065192,
     end_time: 1705240065192,
     environment_info: {
@@ -21,6 +25,12 @@ export const MOCK_DATA_FOR_CHARTS: IExperimentData = {
       {
         id: 1,
         algorithm: "Algorithm1",
+        ipsec: "Algorithm1",
+        time: 5,
+        connections: 1,
+        messageSizeIperf: 16,
+        bandwidth: 1000,
+        intervals: 0.5,
         iterations: 2000,
         message_size: 1024,
         results:
@@ -34,6 +44,12 @@ export const MOCK_DATA_FOR_CHARTS: IExperimentData = {
       {
         id: 2,
         algorithm: "Algorithm2",
+        ipsec: "Algorithm2",
+        time: 10,
+        connections: 3,
+        messageSizeIperf: 1024,
+        bandwidth: 100000,
+        intervals: 1,
         iterations: 1000,
         message_size: 512,
         results:
@@ -47,6 +63,12 @@ export const MOCK_DATA_FOR_CHARTS: IExperimentData = {
       {
         id: 3,
         algorithm: "Algorithm1",
+        ipsec: "Algorithm3",
+        time: 20,
+        connections: 5,
+        messageSizeIperf: 1024,
+        bandwidth: 1000000,
+        intervals: 2,
         iterations: 500,
         message_size: 1024,
         results:
@@ -63,6 +85,12 @@ export const MOCK_DATA_FOR_CHARTS: IExperimentData = {
 
 export const MOCK_DATA_FOR_BAR_CHART = [{
   algorithm: "Algorithm1",
+  ipsec: "Algorithm1",
+  time: 5,
+  connections: 1,
+  messageSizeIperf: 16,
+  bandwidth: 1000,
+  intervals: 0.5,
   iterations: 100,
   results: {
     average_cpu: 2,

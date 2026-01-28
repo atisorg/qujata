@@ -1,9 +1,75 @@
+# (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 services:
+
+# SecGW1 node between Curl and SecGW2
+  secgw1:
+    build:
+      context: /home/ubuntu/qujata/secgw1 # Contains StrongSwan, tcpdump, nano, python and flask installation
+    container_name: secgw1
+    command: [
+      "bash",
+      "-c",
+# Routing from SecGW1 to SecGW2 using socat
+      "apt-get update && apt-get install -y socat && socat TCP-LISTEN:3021,fork,reuseaddr TCP:172.20.1.52:3022"
+    ]
+    ports:
+      - "3021:3021"
+    user: root    # Enables Strongswan configuration
+    cap_add:      # Enables Strongswan configuration
+      - NET_ADMIN
+    networks:
+      myservices-net3:
+        ipv4_address: 172.20.0.50
+      myservices-net2:
+        ipv4_address: 172.20.1.51
+
+# SecGW2 node between SecGW1 and Nginx
+  secgw2:
+    build:
+      context: /home/ubuntu/qujata/secgw2 # Contains StrongSwan, tcpdump, nano, python and flask installation
+    container_name: secgw2
+    command: [
+      "bash",
+      "-c",
+# Routing from SecGW2 to Nginx using socat
+      "apt-get update && apt-get install -y socat && socat TCP-LISTEN:3022,fork,reuseaddr TCP:172.20.2.60:4433"
+    ]
+    ports:
+      - "3022:3022"
+    user: root    # Enables Strongswan configuration
+    cap_add:      # Enables Strongswan configuration
+      - NET_ADMIN
+    depends_on:
+      - secgw1
+    networks:
+      myservices-net:
+        ipv4_address: 172.20.2.53
+      myservices-net2:
+        ipv4_address: 172.20.1.52
+
+# iPerf service to make metrics
+  iperf:
+    build:
+      context: /home/ubuntu/qujata/iperf # Contains nano, python and flask installation
+    container_name: iperf
+    command: tail -f /dev/null
+    ports:
+      - "3005:3005"
+    user: root    # Enables routing
+    cap_add:      # Enables routing
+      - NET_ADMIN
+    networks:
+      myservices-net3:
+        ipv4_address: 172.20.0.48
+
   pushgateway:
     image: prom/pushgateway:latest
     container_name: qujata-pushgateway
     ports:
       - "9091:9091"
+    networks:
+      - myservices-net3
 
   mysql:
     image: qujata/mysql:1.2.0
@@ -13,46 +79,76 @@ services:
       MYSQL_DATABASE: qujata
     ports:
       - "3306:3306"
+    networks:
+      - myservices-net3
 
   nginx:
-    image: qujata/nginx:1.2.0
+    build:
+      context: /home/ubuntu/qujata/nginx  # Changes for default ip route to secgw2 for IPsec tunnel's functionality
+#    image: qujata/nginx:1.2.0
     container_name: qujata-nginx
     ports:
-      - 4433:4433
+      - "4433:4433"
+    user: root    # Enables network changes using ip route (tunnel functionality)
+    cap_add:      # Enables network changes using ip route (tunnel functionality)
+      - NET_ADMIN
     environment:
-      - DEFAULT_GROUPS=prime256v1:secp384r1:frodo640aes:frodo640shake:frodo976aes:frodo976shake:frodo1344aes:frodo1344shake:kyber512:p256_kyber512:kyber768:p384_kyber768:x25519_kyber768:kyber1024:bikel1:bikel3:bikel5:hqc128:hqc192:hqc256
-  
+      - DEFAULT_GROUPS=prime256v1:secp384r1:frodo640aes:frodo640shake:frodo976aes:frodo976shake:frodo1344aes:frodo1344shake:mlkem512:p256_mlkem512:mlkem768:p384_mlkem768:X25519MLKEM768:mlkem1024:bikel1:bikel3:bikel5
+    networks:
+      myservices-net:
+        ipv4_address: 172.20.2.60
+
   curl:
-    image: qujata/curl:1.2.0
+    build:
+      context: /home/ubuntu/qujata/curl  # Changes for the curl petition to the new nginx ip at run-curl and to change default ip route to secgw1 for IPsec tunnel's functionality #AND IPERF?
+#    image: qujata/curl:1.2.0
     container_name: qujata-curl
     ports:
-      - 3010:3010
+      - "3010:3010"
+    user: root    # Enables network changes using ip route (tunnel functionality)
+    cap_add:      # Enables network changes using ip route (tunnel functionality)
+      - NET_ADMIN
     environment:
-      - DEFAULT_GROUPS=prime256v1:secp384r1:frodo640aes:frodo640shake:frodo976aes:frodo976shake:frodo1344aes:frodo1344shake:kyber512:p256_kyber512:kyber768:p384_kyber768:x25519_kyber768:kyber1024:bikel1:bikel3:bikel5:hqc128:hqc192:hqc256
+      - DEFAULT_GROUPS=prime256v1:secp384r1:frodo640aes:frodo640shake:frodo976aes:frodo976shake:frodo1344aes:frodo1344shake:mlkem512:p256_mlkem512:mlkem768:p384_mlkem768:X25519MLKEM768:mlkem1024:bikel1:bikel3:bikel5
+    networks:
+      myservices-net3:
+        ipv4_address: 172.20.0.49
 
   api:
-    image: qujata/api:1.2.0
+    build:
+      context: /home/ubuntu/qujata/api  # Includes the API modifications for changing the IPsec tunnel algortihm
+#    image: qujata/api:1.2.0
     container_name: qujata-api
     ports:
-      - 3020:3020
+      - "3020:3020"
+    user: root    # Enables network changes using ip route (tunnel algorithm change via flask functionality)
+    cap_add:      # Enables network changes using ip route (tunnel algorithm change via flask functionality)
+      - NET_ADMIN
     environment:
       - LOG_LEVEL=INFO
       - ENVIRONMENT=docker
-      - CURL_URL=http://qujata-curl:3010
+      - CURL_URL=http://172.20.0.49:3010
       - CADVISOR_URL=http://qujata-cadvisor:8080
       - ITERATIONS_OPTIONS=100:500:1000:2000:5000:10000:50000
       - MESSAGE_SIZES_OPTIONS=0:1:2:100:1024:102400:204800:1048576:2097152:10485760
       - DATABASE_URI=mysql+pymysql://root:qujata@qujata-mysql:3306/qujata
-      - DEFAULT_GROUPS=prime256v1:secp384r1:frodo640aes:frodo640shake:frodo976aes:frodo976shake:frodo1344aes:frodo1344shake:kyber512:p256_kyber512:kyber768:p384_kyber768:x25519_kyber768:kyber1024:bikel1:bikel3:bikel5:hqc128:hqc192:hqc256
+      - DEFAULT_GROUPS=prime256v1:secp384r1:frodo640aes:frodo640shake:frodo976aes:frodo976shake:frodo1344aes:frodo1344shake:mlkem512:p256_mlkem512:mlkem768:p384_mlkem768:X25519MLKEM768:mlkem1024:bikel1:bikel3:bikel5
+    networks:
+      - myservices-net3
+      - myservices-net2
 
   portal:
-    image: qujata/portal:1.2.0
+    build:
+      context: /home/ubuntu/qujata/portal  #Contains UI changes for IPsec tunnel    
+#    image: qujata/portal:1.2.0
     container_name: qujata-portal
     ports:
-      - 2000:80
+      - "2000:80"
     environment:
       - PQC_PORTAL__BASE_API_URL=http://localhost:3020/qujata-api
       - PQC_PORTAL__DASHBOARD_LINK_HOST=http://localhost:3000
+    networks:
+      - myservices-net3
 
   cadvisor:
     image: qujata/cadvisor:1.1.0
@@ -69,6 +165,8 @@ services:
       - /var/lib/dbus/machine-id:/var/lib/dbus/machine-id:ro
     ports:
       - "8080:8080"
+    networks:
+      - myservices-net3
 
   prometheus:
     image: prom/prometheus:latest
@@ -79,6 +177,8 @@ services:
       - --config.file=/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    networks:
+      - myservices-net3
 
   grafana:
     image: grafana/grafana:latest
@@ -88,10 +188,13 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=qujata
       - GF_SECURITY_ADMIN_PASSWORD=qujata
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
     volumes:
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - ./grafana/dashboard.json:/var/lib/grafana/dashboards/dashboard.json
+    networks:
+      - myservices-net3
 
 
 volumes:
@@ -100,5 +203,19 @@ volumes:
 networks:
   myservices-net:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.2.0/24
+  myservices-net2:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.1.0/24
+  myservices-net3:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
   mon-net:
     driver: bridge
+

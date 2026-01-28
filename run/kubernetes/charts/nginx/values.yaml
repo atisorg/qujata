@@ -35,7 +35,7 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 env:
-  DEFAULT_GROUPS: prime256v1:secp384r1:frodo640aes:frodo640shake:frodo976aes:frodo976shake:frodo1344aes:frodo1344shake:kyber512:p256_kyber512:kyber768:p384_kyber768:x25519_kyber768:kyber1024:bikel1:bikel3:bikel5:hqc128:hqc192:hqc256
+  DEFAULT_GROUPS: prime256v1:secp384r1:frodo640aes:frodo640shake:frodo976aes:frodo976shake:frodo1344aes:frodo1344shake:mlkem512:p256_mlkem512:mlkem768:p384_mlkem768:X25519MLKEM768:mlkem1024:bikel1:bikel3:bikel5
 
 service:
   type: ClusterIP

@@ -37,17 +37,14 @@ As standardization for these algorithms within TLS is not done, all TLS code poi
 | frodo640shake    | Yes     | Post Quantum |
 | frodo976aes      | Yes     | Post Quantum |
 | frodo976shake    | Yes     | Post Quantum |
-| hqc128           | Yes     | Post Quantum |
-| hqc192           | Yes     | Post Quantum |
-| hqc256           | Yes     | Post Quantum |
-| kyber1024        | Yes     | Post Quantum |
-| kyber512         | Yes     | Post Quantum |
-| kyber768         | Yes     | Post Quantum |
-| p256_kyber512    | Yes     | Hybrid        |
-| p384_kyber768    | Yes     | Hybrid        |
+| mlkem1024        | Yes     | Post Quantum |
+| mlkem512         | Yes     | Post Quantum |
+| mlkem768         | Yes     | Post Quantum |
+| p256_mlkem512    | Yes     | Hybrid        |
+| p384_mlkem768    | Yes     | Hybrid        |
 | prime256v1       | Yes     | Classic       |
 | secp384r1        | Yes     | Classic       |
-| x25519_kyber768  | Yes     | Hybrid        |
+| X25519MLKEM768  | Yes     | Hybrid        |
 
 <!--- OQS_TEMPLATE_FRAGMENT_IDS_END -->
 

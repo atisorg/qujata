@@ -1,4 +1,6 @@
- #!/bin/bash
+# (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
+#!/bin/bash
 
 # This script expects five arguments
 nginx_host="$1"
@@ -7,7 +9,7 @@ iteration_count="$3"
 algorithm="$4"
 message_size="$5"
 
-url="https://${nginx_host}:${nginx_port}"
+url="https://172.20.2.60:4433"
 header="Content-Type: text/plain"
 # Generates a random message with the specified size and saves it to a temporary file.
 # This is useful for cases where the payload is too large to be sent in the curl command as text.

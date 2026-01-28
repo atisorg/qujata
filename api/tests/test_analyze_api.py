@@ -1,3 +1,5 @@
+# (C) Copyright 2026 Telefónica Innovación Digital (alexandremiquel.frauamar.practicas@telefonica.com, antonio.pastorperales@telefonica.com)
+
 import unittest
 from datetime import datetime, timedelta
 import json
@@ -38,7 +40,7 @@ class TestAnalyzeAPI(unittest.TestCase):
     @patch('src.services.metrics_service.parser.parse', side_effect=lambda x: datetime.fromisoformat(x))
     def test_analyze(self, mock_parser, mock_start_collecting, mock_stop_collecting, mock_get_metrics):
         input_data = {
-            "algorithms": ["kyber512"],
+            "algorithms": ["mlkem512"],
             "iterationsCount": [1000, 2000],
             "experimentName": "name",
             "description": "name",
@@ -99,7 +101,7 @@ class TestAnalyzeAPI(unittest.TestCase):
 
     def test_analyze_return_general_error(self, mock_start_collecting, mock_stop_collecting, mock_get_metrics):
         input_data = {
-            "algorithms":["kyber512"],
+            "algorithms":["mlkem512"],
             "iterationsCount": [1000],
             "experimentName": "name",
             "description": "name",
@@ -120,7 +122,7 @@ class TestAnalyzeAPI(unittest.TestCase):
 
     def test_analyze_with_invalid_iterations_count(self, mock_start_collecting, mock_stop_collecting, mock_get_metrics):
         input_data = {
-            "algorithms": ["kyber512"],
+            "algorithms": ["mlkem512"],
             "iterationsCount": [-1],
             "experimentName": "name",
             "description": "name",
@@ -136,7 +138,7 @@ class TestAnalyzeAPI(unittest.TestCase):
 
     def test_analyze_with_invalid_message_sizes(self, mock_start_collecting, mock_stop_collecting, mock_get_metrics):
         input_data = {
-            "algorithms": ["kyber512"],
+            "algorithms": ["mlkem512"],
             "iterationsCount": [10],
             "experimentName": "name",
             "description": "name",
@@ -184,7 +186,7 @@ class TestAnalyzeAPI(unittest.TestCase):
 
     def test_analyze_with_curl_failure(self, mock_start_collecting, mock_stop_collecting, mock_get_metrics):
         input_data = {
-            "algorithms":["kyber512"],
+            "algorithms":["mlkem512"],
             "iterationsCount": [1000],
             "experimentName": "name",
             "description": "name",
@@ -207,7 +209,7 @@ class TestAnalyzeAPI(unittest.TestCase):
 
     def test_analyze_with_missing_env_info(self, mock_start_collecting, mock_stop_collecting, mock_get_metrics):
         input_data = {
-            "algorithms": ["kyber512"],
+            "algorithms": ["mlkem512"],
             "iterationsCount": [1000],
             "experimentName": "name",
             "description": "name",
@@ -227,7 +229,7 @@ class TestAnalyzeAPI(unittest.TestCase):
         with patch(GET_REQUEST) as mock_get:
             mock_get.return_value.status_code = 200
             input_data = {
-                "algorithms":["kyber512"],
+                "algorithms":["mlkem512"],
                 "iterationsCount": [1000],
                 "experimentName": "name",
                 "description": "name",
@@ -246,7 +248,7 @@ class TestAnalyzeAPI(unittest.TestCase):
 
     def test_analyze_sleep_between_tests(self, mock_start_collecting, mock_stop_collecting, mock_get_metrics):
         input_data = {
-            "algorithms":["kyber512","frodo640aes"],
+            "algorithms":["mlkem512","frodo640aes"],
             "iterationsCount": [1000],
             "experimentName": "name",
             "description": "name",
